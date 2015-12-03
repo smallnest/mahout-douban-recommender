@@ -1,6 +1,5 @@
 package com.colobu.douban.recommender;
 
-import com.google.common.io.Closeables;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.impl.similarity.precompute.FileSimilarItemsWriter;
@@ -8,33 +7,10 @@ import org.apache.mahout.cf.taste.impl.similarity.precompute.MultithreadedBatchI
 import org.apache.mahout.cf.taste.recommender.ItemBasedRecommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.precompute.BatchItemSimilarities;
-import org.apache.mahout.common.iterator.FileLineIterator;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DoubanItemBasedRecommender {
-    public static Map<Long, String> getMovies(String base) {
-        Map<Long, String> movies = new HashMap<>();
-
-        try {
-            File file = new File(base + "hot_movies.csv");
-            FileLineIterator iterator = new FileLineIterator(file, false);
-            String line = iterator.next();
-            while (!line.isEmpty()) {
-                String[] m = line.split(",");
-                movies.put(Long.parseLong(m[0]), m[2]);
-                line = iterator.next();
-            }
-            Closeables.close(iterator, true);
-        } catch (Exception ex) {
-
-        }
-
-        return movies;
-    }
-
     public static void main(String[] args) throws Exception {
         String base = "C:\\Users\\smallnest\\Desktop\\test\\";
         File file = new File(base + "user_movies.csv");

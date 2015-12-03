@@ -1,5 +1,7 @@
 package com.colobu.douban.recommender;
 
+import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
+import org.apache.mahout.cf.taste.impl.common.FastIDSet;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 
 import java.io.File;
@@ -46,5 +48,26 @@ public class DoubanFileDataModel extends FileDataModel {
     protected long readItemIDFromString(String value) {
         value = value.trim();
         return super.readItemIDFromString(value);
+    }
+
+    @Override
+    protected void processLine(String line, FastByIDMap<?> data, FastByIDMap<FastByIDMap<Long>> timestamps, boolean fromPriorData) {
+        String[] fields = line.split(",");
+        if (fields[2].equals("-1")) {
+            fields[2] = "3";
+        }
+        line = fields[0] + "," + fields[1] + "," + fields[2];
+
+        super.processLine(line, data, timestamps, fromPriorData);
+    }
+
+    @Override
+    protected void processLineWithoutID(String line, FastByIDMap<FastIDSet> data, FastByIDMap<FastByIDMap<Long>> timestamps) {
+        String[] fields = line.split(",");
+        if (fields[2].equals("-1")) {
+            fields[2] = "3";
+        }
+        line = fields[0] + "," + fields[1] + "," + fields[2];
+        super.processLineWithoutID(line, data, timestamps);
     }
 }
